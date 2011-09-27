@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from bb_score import *
+from bb_score_objects import *
 
 phillies = Team(name="Phillies", hometown="Philadelphia", manager="Charlie Manuel", league="NL")
 braves = Team(name="Braves", hometown="Atlanta", manager="Bobby Cox", league="NL")
