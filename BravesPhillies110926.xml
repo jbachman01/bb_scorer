@@ -1,0 +1,24 @@
+<game>
+  <home_lineup team="Braves">
+    <Michael_Bourn position="8" number="24" bats="L" throws="R" name="Michael Bourn"/>
+    <Martin_Prado position="7" number="14" bats="R" throws="R" name="Martin Prado"/>
+    <Chipper_Jones position="5" number="10" bats="S" throws="R" name="Chipper Jones"/>
+    <Dan_Uggla position="4" number="26" bats="R" throws="R" name="Dan Uggla"/>
+    <Freddie_Freeman position="3" number="5" bats="L" throws="R" name="Freddie Freeman"/>
+    <Brian_McCann position="2" number="16" bats="L" throws="R" name="Brian McCann"/>
+    <Matt_Diaz position="9" number="23" bats="R" throws="R" name="Matt Diaz"/>
+    <Alex_Gonzalez position="6" number="2" bats="R" throws="R" name="Alex Gonzalez"/>
+    <Randall_Delgado position="1" number="40" bats="R" throws="R" name="Randall Delgado"/>
+  </home_lineup>
+  <away_lineup team="Phillies">
+    <Jimmy_Rollins position="6" number="11" bats="S" throws="R" name="Jimmy Rollins"/>
+    <Chase_Utley position="4" number="26" bats="L" throws="R" name="Chase Utley"/>
+    <John_Mayberry position="9" number="15" bats="R" throws="R" name="John Mayberry"/>
+    <Ryan_Howard position="3" number="6" bats="L" throws="L" name="Ryan Howard"/>
+    <Shane_Victorino position="8" number="8" bats="S" throws="R" name="Shane Victorino"/>
+    <Raul_Ibanez position="7" number="29" bats="L" throws="R" name="Raul Ibanez"/>
+    <Michael_Martinez position="5" number="19" bats="S" throws="R" name="Michael Martinez"/>
+    <Carlos_Ruiz position="2" number="51" bats="R" throws="R" name="Carlos Ruiz"/>
+    <Cliff_Lee position="1" number="33" bats="L" throws="L" name="Cliff Lee"/>
+  </away_lineup>
+</game>
