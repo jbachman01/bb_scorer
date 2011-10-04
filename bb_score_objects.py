@@ -4,6 +4,9 @@ bb_scorer
 """
 
 from lxml import etree 
+import urllib2
+import re
+import json
 
 def trans_position(pos_num):
     """ take a positions number and return a position name """
@@ -21,7 +24,7 @@ def trans_position(pos_num):
 
 class Player(object):
     """ a baseball player """
-    def __init__(self, team, name='', number='', pos_num='', bats='', throws=''):
+    def __init__(self, team, name=None, number=None, pos_num=None, bats=None, throws=None):
         self.name = name
         self.number = number
         self.pos_num = pos_num
@@ -37,17 +40,36 @@ class Player(object):
         no_space_name = self.name.replace(' ', '_')
         return etree.SubElement(parent_el, no_space_name, name=self.name, number=str(self.number), position=str(self.pos_num), bats=self.bats, throws=self.throws)
 
+    def lookup_player_id(self):
+        req = urllib2.Request('http://mlb.mlb.com/lookup/json/named.search_autocomp.bam?sport_code=%27mlb')
+        res = urllib2.urlopen(req)
+        content = res.read()
+        content = re.sub('\/\*.+?\*\/', '', content)
+        obj = json.loads(content)
+        player_rows = obj["search_autocomp"]["search_autocomplete"]["queryResults"]["row"]
+        search_name = self.name.lower()
+        player_id = None
+        for pl in player_rows:
+            if search_name == str(pl["n"]).lower():
+                player_id = str(pl["p"])
+        return player_id
+
 class Team(object):
     """ a baseball team """
-    def __init__(self, name='', hometown='', manager='', league=''):
+    def __init__(self, name=None, hometown=None, manager=None, league=None):
         self.name = name
         self.hometown = hometown
         self.manager = manager
         self.league = league
 
+class Roster(object):
+    """ all active player's on a team """
+    def __init__(self, team):
+        self.team = team
+
 class Lineup(object):
     """ a team's current lineup """
-    def __init__(self, team, one, two, three, four, five, six, seven, eight, nine, DH=''):
+    def __init__(self, team, one, two, three, four, five, six, seven, eight, nine, DH=None):
         self.team = team
         self.one = one
         self.two = two
