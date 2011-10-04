@@ -49,10 +49,24 @@ class Player(object):
         player_rows = obj["search_autocomp"]["search_autocomplete"]["queryResults"]["row"]
         search_name = self.name.lower()
         player_id = None
-        for pl in player_rows:
-            if search_name == str(pl["n"]).lower():
-                player_id = str(pl["p"])
-        return player_id
+        try:
+            for pl in player_rows:
+                if search_name == str(pl["n"]).lower():
+                    player_id = str(pl["p"])
+            if player_id:
+                return player_id
+            else:
+                raise PlayerLookupError(self.name)
+        except PlayerLookupError as e:
+            print 'Could not find player id for', e.value 
+
+
+class PlayerLookupError(Exception):
+    """ error to throw when a player's id cannot be found """
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
 
 class Team(object):
     """ a baseball team """
