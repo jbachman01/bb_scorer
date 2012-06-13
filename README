@@ -1,0 +1,7 @@
+bb_scorer
+
+Ideally this will be a python command line app used to score baseball games on the command line.
+
+I imagine this to be an interactive prompt sort of interface although I see GUI in the distnt future.
+
+Games and teams will be stored to disk in XML

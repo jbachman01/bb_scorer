@@ -7,6 +7,8 @@ from lxml import etree
 import urllib2
 import re
 import json
+import py_mlb.player
+import pprint
 
 def trans_position(pos_num):
     """ take a positions number and return a position name """
@@ -22,14 +24,54 @@ def trans_position(pos_num):
             'DH': 'Designated Hitter'} 
     return positions[pos_num]
 
-class Player(object):
-    """ a baseball player """
-    def __init__(self, team, name=None, number=None, pos_num=None, bats=None, throws=None):
+class Player(py_mlb.player.Player):
+    #from py_mlb import player
+
+    """ a baseball player 
+    Inherets from py_mlb.player.Player which gives these keys:
+    'active_sw'
+    'bats'
+    'birth_city'
+    'birth_country'
+    'birth_date'
+    'file_code'
+    'gender'
+    'height_feet'
+    'height_inches'
+    'high_school'
+    'jersey_number'
+    'name_display_first_last'
+    'name_display_first_last_html'
+    'name_display_last_first'
+    'name_display_last_first_html'
+    'name_display_roster'
+    'name_display_roster_html'
+    'name_first'
+    'name_full'
+    'name_last'
+    'name_middle'
+    'name_use'
+    'player_id'
+    'primary_position'
+    'primary_position_txt'
+    'primary_sport_code'
+    'pro_debut_date'
+    'start_date'
+    'status'
+    'status_code'
+    'status_date'
+    'team_abbrev'
+    'team_code'
+    'team_id'
+    'team_name'
+    'throws'
+    'weight'
+
+    """
+    def __init__(self, team, name=None):
         self.name = name
-        self.number = number
-        self.pos_num = pos_num
-        self.bats = bats
-        self.throws = throws
+        player_id = self.lookup_player_id()
+        super(Player, self).__init__(player_id)
 
     def player_info(self):
         print('{:<20}{:<8}{:<15}'.format("Name:", "Number:", "Position:"))
@@ -38,7 +80,7 @@ class Player(object):
 
     def player_xml(self, parent_el):
         no_space_name = self.name.replace(' ', '_')
-        return etree.SubElement(parent_el, no_space_name, name=self.name, number=str(self.number), position=str(self.pos_num), bats=self.bats, throws=self.throws)
+        return etree.SubElement(parent_el, no_space_name, name=self.name, number=str(self["jersey_number"]), position=str(self["primary_position"]), bats=self["bats"], throws=self["throws"])
 
     def lookup_player_id(self):
         req = urllib2.Request('http://mlb.mlb.com/lookup/json/named.search_autocomp.bam?sport_code=%27mlb')
@@ -99,15 +141,15 @@ class Lineup(object):
 
     def lineup_info(self):
         print("  " + '{:<20}{:<8}{:<15}'.format("Name:", "Number:", "Position:"))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("1", self.one.name, self.one.number, trans_position(self.one.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("2", self.two.name, self.two.number, trans_position(self.two.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("3", self.three.name, self.three.number, trans_position(self.three.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("4", self.four.name, self.four.number, trans_position(self.four.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("5", self.five.name, self.five.number, trans_position(self.five.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("6", self.six.name, self.six.number, trans_position(self.six.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("7", self.seven.name, self.seven.number, trans_position(self.seven.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("8", self.eight.name, self.eight.number, trans_position(self.eight.pos_num)))
-        print('{:<2}{:<20}{!s:<8}{:<15}'.format("9", self.nine.name, self.nine.number, trans_position(self.nine.pos_num)))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("1", self.one.name, self.one["jersey_number"], self.one["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("2", self.two.name, self.two["jersey_number"], self.two["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("3", self.three.name, self.three["jersey_number"], self.three["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("4", self.four.name, self.four["jersey_number"], self.four["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("5", self.five.name, self.five["jersey_number"], self.five["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("6", self.six.name, self.six["jersey_number"], self.six["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("7", self.seven.name, self.seven["jersey_number"], self.seven["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("8", self.eight.name, self.eight["jersey_number"], self.eight["primary_position_txt"]))
+        print('{:<2}{:<20}{!s:<8}{:<15}'.format("9", self.nine.name, self.nine["jersey_number"], self.nine["primary_position_txt"]))
 
     def lineup_xml(self, game_xml, lineup_name):
         lineup_xml = etree.SubElement(game_xml, lineup_name, team=self.team.name)
@@ -152,3 +194,4 @@ class AtBat(object):
         self.player = player
         self.action = action
         self.destination = destination
+
